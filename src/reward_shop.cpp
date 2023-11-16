@@ -38,10 +38,10 @@ public:
         if (!sConfigMgr->GetOption<bool>("RewardShopEnable", 0))
             return false;
 
-        std::string text = "Enter code and press accept";
-        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I'd like to redeem my code.", GOSSIP_SENDER_MAIN, 1, text, 0, true);
-        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "How do i get a code?", GOSSIP_SENDER_MAIN, 2);
-        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I dont have a code.", GOSSIP_SENDER_MAIN, 3);
+        std::string text = "输入兑换码并点击确定";
+        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "兑换奖励", GOSSIP_SENDER_MAIN, 1, text, 0, true);
+//        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "How do i get a code?", GOSSIP_SENDER_MAIN, 2);
+//        AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I dont have a code.", GOSSIP_SENDER_MAIN, 3);
 
         if (sConfigMgr->GetOption<bool>("AllowGM", 1) && player->IsGameMaster())
         {
@@ -104,7 +104,7 @@ public:
         std::string playerIP = player->GetSession()->GetRemoteAddress();
         std::string rewardcode = code;
         std::ostringstream messageCode;
-        messageCode << "Sorry " << player->GetName() << ", that is not a valid code or has already been redeemed.";
+        messageCode << "抱歉 " << player->GetName() << ", 这不是一个有效的兑换码或者它已经被领取。";
 
         std::size_t found = rewardcode.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-");
 
@@ -154,7 +154,7 @@ public:
 
                 if (count == 0 || dest.empty())
                 {
-                    ChatHandler(player->GetSession()).PSendSysMessage("Can not create item either item is unique or you do not have any space");
+                    ChatHandler(player->GetSession()).PSendSysMessage("无法获得物品，因为该物品是唯一的或者你的背包没有任何空间");
                     ChatHandler(player->GetSession()).SetSentErrorMessage(true);
                     return false;
                 }
@@ -166,19 +166,19 @@ public:
                 break;
             case 2: /* Gold */
                 player->ModifyMoney(action_data * 10000);
-                ChatHandler(player->GetSession()).PSendSysMessage("CHAT OUTPUT: Successfully added [%u G]", action_data);
+                ChatHandler(player->GetSession()).PSendSysMessage("成功获得[%u G]", action_data);
                 break;
             case 3: /* Name Change */
                 player->SetAtLoginFlag(AT_LOGIN_RENAME);
-                ChatHandler(player->GetSession()).PSendSysMessage("CHAT OUTPUT: Please log out for name change.");
+                ChatHandler(player->GetSession()).PSendSysMessage("请重新登录以更改名称");
                 break;
             case 4: /* Faction Change */
                 player->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-                ChatHandler(player->GetSession()).PSendSysMessage("CHAT OUTPUT: Please log out for faction change.");
+                ChatHandler(player->GetSession()).PSendSysMessage("请重新登录以更改阵营");
                 break;
             case 5: /* Race Change */
                 player->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
-                ChatHandler(player->GetSession()).PSendSysMessage("CHAT OUTPUT: Please log out for race change.");
+                ChatHandler(player->GetSession()).PSendSysMessage("请重新登录以更改种族");
                 break;
             }
 
